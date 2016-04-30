@@ -113,7 +113,18 @@ ConfigurationOfBlocket >> baseline01: spec [
 	<version: '0.1-baseline'>
 
 	spec for: #'common' do: [
-		spec blessing: #'baseline'. ].
+		spec blessing: #'baseline'.
+		spec project: 'Seaside3' with: [
+				spec
+					className: #ConfigurationOfSeaside3;
+					versionString: #'stable';
+					repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo40/main/' ].
+		spec package: 'CAs-Blocket'.
+		spec 
+			group: 'core' with: #('CAs-Blocket' );
+			group: 'default' with: #('core' 'tests' );
+			group: 'tests' with: #();
+			group: 'web' with: #(). ].
 
 ]
 
