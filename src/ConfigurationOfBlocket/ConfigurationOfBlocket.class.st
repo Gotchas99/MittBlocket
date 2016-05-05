@@ -131,7 +131,9 @@ ConfigurationOfBlocket >> baseline01: spec [
 					className: #ConfigurationOfVoyageMongo;
 					versionString: #'stable';
 					repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo40/main/' ].
-		spec package: 'CAs-Blocket'.
+		spec 
+			package: 'CAs-Blocket';
+			package: 'WebRobot'.
 		spec 
 			group: 'core' with: #('CAs-Blocket' );
 			group: 'default' with: #('core' 'tests' );
