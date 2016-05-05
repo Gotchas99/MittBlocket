@@ -169,25 +169,26 @@ t ifNotNil:[			flds at: #oldPrice put: t innerContents trimmed].
 ]
 
 { #category : #'as yet unclassified' }
-BlocketRobot >> parseRows: fullHtml [
-	| r rows title cat dt imgCont mediaBody |
+BlocketRobot >> parseRows: listHtml [
+	| r rows title cat dt  mediaBody |
 	rows := OrderedCollection new.
-	fullHtml
+	self halt.
+	listHtml
 		do: [ :html | 
-			r := BlocketItem new html: html.
+			r := BlocketItem new "html: html".
 			r id: (html attributes at: 'id').
 			mediaBody := html children second.
 			dt := mediaBody children first children second attributes at: #datetime.
 			r dateTime: dt asDateAndTime.
-			imgCont := html tagWithClass: 'image_container'.
-			r thumb: (imgCont tagWithClass: 'item_image').
+			"imgCont := html tagWithClass: 'image_container'.
+			r thumb: (imgCont tagWithClass: 'item_image')."
 			title := mediaBody tagWithClass: 'item_link'.
 			r title: title innerContents trimmed.
+			r url: title href.
 			r priceCut: (mediaBody tagWithClass: 'blocket-icon-price-lowered') notNil.
 			r priceCut
 				ifTrue: [ r price: (mediaBody tagWithClass: 'list_price') children first innerContents trimmed ]
 				ifFalse: [ r price: (mediaBody tagWithClass: 'list_price') innerContents trimmed ].
-			r url: title href.
 			cat := mediaBody children first children first children first.
 			r category: cat innerContents trimmed.
 			r area: (self parseArea: mediaBody).

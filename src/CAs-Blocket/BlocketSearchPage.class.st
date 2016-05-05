@@ -12,7 +12,10 @@ BlocketSearchPage >> addSearch [
 	| s |
 	s := self request: 'Söksträng'.
 	s isEmptyOrNil
-		ifFalse: [ project addSearch: s ]
+		ifFalse: [ 
+			project
+				addSearch: s;
+				save ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -23,7 +26,10 @@ BlocketSearchPage >> project:aBlocketProject [
 { #category : #'as yet unclassified' }
 BlocketSearchPage >> removeSearch: aString [
 	(self confirm: 'Är du säker på att du vill ta bort?')
-		ifTrue: [ project removeSearch: aString ]
+		ifTrue: [ 
+			project
+				removeSearch: aString;
+				save ]
 ]
 
 { #category : #'as yet unclassified' }

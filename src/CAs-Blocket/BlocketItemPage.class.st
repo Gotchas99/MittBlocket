@@ -9,7 +9,9 @@ Class {
 
 { #category : #'as yet unclassified' }
 BlocketItemPage >> dontShow [
-	item dontShow.
+	item
+		dontShow;
+		save.
 	self answer
 ]
 
@@ -19,15 +21,18 @@ BlocketItemPage >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
-BlocketItemPage >> item:aBlocketItem [
+BlocketItemPage >> item: aBlocketItem [
 	item := aBlocketItem.
-	item viewed.
+	item
+		viewed;
+		save
 ]
 
 { #category : #'as yet unclassified' }
 BlocketItemPage >> refresh [
-	item refresh.
-"	self updateFields"
+	item
+		refresh;
+		save	"	self updateFields"
 ]
 
 { #category : #'as yet unclassified' }
@@ -67,5 +72,7 @@ BlocketItemPage >> renderDesc: aDesc [
 
 { #category : #'as yet unclassified' }
 BlocketItemPage >> starred [
-	item starred
+	item
+		starred;
+		save
 ]

@@ -11,6 +11,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+BlocketProject class >> isVoyageRoot [
+    ^ true
+]
+
+{ #category : #'as yet unclassified' }
 BlocketProject class >> newBlandare [
 	| p |
 	p := self new.
@@ -21,6 +26,11 @@ BlocketProject class >> newBlandare [
 "	p addSearch: 'http://www.blocket.se/goteborg?q=*blandare*&cg=2000&w=1&st=s&ca=15&l=0&md=th'."
 	p refresh.
 	^p
+]
+
+{ #category : #'as yet unclassified' }
+BlocketProject class >> voyageCollectionName [
+ ^ 'Projects'
 ]
 
 { #category : #'as yet unclassified' }
@@ -46,17 +56,17 @@ BlocketProject >> initialize [
 	searches := SortedCollection new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlocketProject >> name [
 	^name
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlocketProject >> name: aString [
 	^name := aString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 BlocketProject >> printOn: aStream [
 	aStream 
 		nextPutAll: 'BlocketProject(';
@@ -64,7 +74,7 @@ BlocketProject >> printOn: aStream [
 		nextPutAll: ')'.   
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 BlocketProject >> printString [
 	^self name contractTo: 45
 ]
@@ -77,7 +87,7 @@ BlocketProject >> refresh [
 		do: [ :item | 
 			item gone.
 			item isStarred
-				ifFalse: [ result remove: item ] ].
+				ifFalse: [ self removeItem: item ] ].
 	searches
 		do: [ :searchText | 
 			items := BlocketRobot new getList: searchText.

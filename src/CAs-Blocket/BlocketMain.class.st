@@ -32,7 +32,9 @@ BlocketMain >> addProject [
 	s isEmptyOrNil
 		ifFalse: [ 
 			(p := BlocketProject new) name: s.
-			BlocketManager current addProject: p ]
+			BlocketManager current
+				addProject: p;
+				save ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -43,11 +45,15 @@ BlocketMain >> initialize [
 { #category : #'as yet unclassified' }
 BlocketMain >> removeProject: aProject [
 	(self confirm: 'Är du säker på att du vill ta bort?')
-		ifTrue: [ BlocketManager current removeProject: aProject ]
+		ifTrue: [ 
+			BlocketManager current
+				removeProject: aProject;
+				save ]
 ]
 
 { #category : #'as yet unclassified' }
 BlocketMain >> renderContentOn: html [
+	BlocketManager current refresh.
 	html heading: 'Blocket projekt'.
 	html anchor
 		callback: [ self addProject ];

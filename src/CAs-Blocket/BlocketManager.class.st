@@ -16,6 +16,23 @@ BlocketManager class >> current [
 	^Current
 ]
 
+{ #category : #voyage }
+BlocketManager class >> initDB [
+	| repository |
+	repository := VOMongoRepository database: 'blocket'.
+	repository enableSingleton
+]
+
+{ #category : #voyage }
+BlocketManager class >> isVoyageRoot [
+    ^ true
+]
+
+{ #category : #'as yet unclassified' }
+BlocketManager class >> reset [
+	Current := nil
+]
+
 { #category : #'as yet unclassified' }
 BlocketManager class >> test [
 	self new test
@@ -24,6 +41,11 @@ BlocketManager class >> test [
 { #category : #'as yet unclassified' }
 BlocketManager class >> test2 [
 "	^Current := self new test2"
+]
+
+{ #category : #voyage }
+BlocketManager class >> voyageCollectionName [
+ ^ 'Root'
 ]
 
 { #category : #'as yet unclassified' }
@@ -41,6 +63,11 @@ BlocketManager >> initialize [
 BlocketManager >> projects [
 	projects ifNil: [projects := SortedCollection new].
 	^projects
+]
+
+{ #category : #'as yet unclassified' }
+BlocketManager >> refresh [
+	projects := BlocketProject selectAll asSortedCollection
 ]
 
 { #category : #'as yet unclassified' }

@@ -14,6 +14,16 @@ Class {
 	#category : #'CAs-Blocket'
 }
 
+{ #category : #voyage }
+BlocketItem class >> isVoyageRoot [
+    ^ true
+]
+
+{ #category : #voyage }
+BlocketItem class >> voyageCollectionName [
+ ^ 'Items'
+]
+
 { #category : #accessing }
 BlocketItem >> <= aBlockItem [
 	(self dateTime class = DateAndTime)
@@ -28,7 +38,11 @@ BlocketItem >> <= aBlockItem [
 
 { #category : #accessing }
 BlocketItem >> = aBlockItem [
-	^(self id) = (aBlockItem id)
+	self == aBlockItem
+		ifTrue: [ ^ true ].
+	(aBlockItem isKindOf: self class)
+		ifFalse: [ ^ false ].
+	^ self id = aBlockItem id
 ]
 
 { #category : #accessing }
@@ -53,7 +67,8 @@ BlocketItem >> at: key ifAbsent: aBlock [
 { #category : #'access primitives' }
 BlocketItem >> at: key put: anObject [
 	props at: key put: anObject.
-	^anObject
+	self save.
+	^ anObject
 ]
 
 { #category : #accessing }
@@ -97,13 +112,17 @@ BlocketItem >> desc: aString [
 
 { #category : #actions }
 BlocketItem >> dontShow [
-	self starred: false.
-	^ self at: #dontshow put: true
+	self
+		starred: false;
+		at: #dontshow put: true;
+		save
 ]
 
 { #category : #actions }
 BlocketItem >> gone [
-	^(self at: #gone put: true) 
+	self
+		at: #gone put: true;
+		save
 ]
 
 { #category : #testing }
@@ -128,7 +147,9 @@ BlocketItem >> id [
 
 { #category : #accessing }
 BlocketItem >> id: aString [
-	id := aString asSymbol
+	id := aString asSymbol.
+	self halt.
+	self save
 ]
 
 { #category : #accessing }
@@ -197,8 +218,7 @@ BlocketItem >> price: aString [
 
 { #category : #accessing }
 BlocketItem >> priceCut [
-	^ (self at: #priceCut) 
-		or: [(self at: #oldPrice) notNil]
+	^ (self at: #priceCut) or: [ (self at: #oldPrice) notNil ]
 ]
 
 { #category : #accessing }
@@ -231,17 +251,21 @@ BlocketItem >> refresh [
 	images := props at: #images.
 	images isEmpty
 		ifTrue: [ images add: self thumb ].
-	self at: #LastFound: put: DateAndTime now
+	self
+		at: #LastFound: put: DateAndTime now;
+		save
 ]
 
 { #category : #actions }
 BlocketItem >> starred [
-	^ self at: #star put: self isStarred not
+	self starred: self isStarred not
 ]
 
 { #category : #actions }
 BlocketItem >> starred: aBoolean [
-	^ self at: #star put: aBoolean 
+	self
+		at: #star put: aBoolean;
+		save
 ]
 
 { #category : #accessing }
@@ -280,5 +304,7 @@ BlocketItem >> url: aString [
 
 { #category : #actions }
 BlocketItem >> viewed [
-	^(self at: #viewed put: true) 
+	self
+		at: #viewed put: true;
+		save
 ]

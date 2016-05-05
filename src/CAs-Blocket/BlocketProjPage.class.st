@@ -9,7 +9,8 @@ Class {
 
 { #category : #'as yet unclassified' }
 BlocketProjPage >> dontShow: anItem [
-	anItem dontShow 
+	anItem
+		dontShow
 ]
 
 { #category : #'as yet unclassified' }
@@ -24,7 +25,9 @@ BlocketProjPage >> project:aBlocketProject [
 
 { #category : #'as yet unclassified' }
 BlocketProjPage >> refresh [
-	project refresh
+	project
+		refresh;
+		save
 ]
 
 { #category : #'as yet unclassified' }
