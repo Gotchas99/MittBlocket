@@ -137,7 +137,7 @@ ConfigurationOfBlocket >> baseline01: spec [
 					versionString: #'bleedingEdge';
 					repository: 'http://smalltalkhub.com/mc/Gotchas/TvProgram/main/' ].
 		spec package: 'CAs-Blocket' with: [
-				spec requires: #('WebRobot' 'Seaside3' 'VoyageMongo' 'MongoTalk' ). ].
+				spec requires: #('WebRobot' 'Seaside3' 'VoyageMongo' ). ].
 		spec 
 			group: 'core' with: #('CAs-Blocket' );
 			group: 'default' with: #('core' 'tests' );
