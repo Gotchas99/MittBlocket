@@ -114,6 +114,7 @@ ConfigurationOfBlocket >> baseline01: spec [
 
 	spec for: #'common' do: [
 		spec blessing: #'baseline'.
+		spec repository: 'http://smalltalkhub.com/mc/Gotchas/MittBlocket/main/'.
 		spec 
 			project: 'Seaside3' with: [
 				spec
