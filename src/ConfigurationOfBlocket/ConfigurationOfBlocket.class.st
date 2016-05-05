@@ -130,10 +130,13 @@ ConfigurationOfBlocket >> baseline01: spec [
 				spec
 					className: #ConfigurationOfVoyageMongo;
 					versionString: #'stable';
-					repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo40/main/' ].
-		spec 
-			package: 'CAs-Blocket';
-			package: 'WebRobot'.
+					repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo40/main/' ];
+			project: 'WebRobot' with: [
+				spec
+					className: #ConfigurationOfWebRobot;
+					versionString: #'bleedingEdge';
+					repository: 'http://smalltalkhub.com/mc/Gotchas/TvProgram/main/' ].
+		spec package: 'CAs-Blocket'.
 		spec 
 			group: 'core' with: #('CAs-Blocket' );
 			group: 'default' with: #('core' 'tests' );
