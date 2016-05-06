@@ -38,18 +38,19 @@ BlocketProject >> <= aProject [
 	^self name <= aProject name
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 BlocketProject >> addItem: anItem [
 	result addIfNotPresent: anItem
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 BlocketProject >> addSearch: aString [
 " a search is a Blocket-URL that gives a list of items"
-	searches add: aString
+	searches add: aString.
+	self save
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialize }
 BlocketProject >> initialize [
 	name := 'Nytt projekt'.
 	result := SortedCollection new.
@@ -79,7 +80,7 @@ BlocketProject >> printString [
 	^self name contractTo: 45
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 BlocketProject >> refresh [
 	| items gone |
 	gone := result reject: [ :item | BlocketRobot new checkIfItemExists: item ].
@@ -92,21 +93,31 @@ BlocketProject >> refresh [
 		do: [ :searchText | 
 			items := BlocketRobot new getList: searchText.
 			items do: [ :item | self addItem: item ] ].
-	lastRefresh := DateAndTime now
+	lastRefresh := DateAndTime now.
+	self result do: [ :each | each save ].
+	self save
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
+BlocketProject >> removeItem: anItem [
+	result remove: anItem.
+	anItem remove
+]
+
+{ #category : #action }
 BlocketProject >> removeSearch: aString [
-" a search is a Blocket-URL that gives a list of items"
-	searches remove: aString
+	" a search is a Blocket-URL that gives a list of items"
+
+	searches remove: aString.
+	self save
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlocketProject >> result [
 	^result
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlocketProject >> searches [
 	^searches
 ]

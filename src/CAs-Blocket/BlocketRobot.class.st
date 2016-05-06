@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-BlocketRobot class >> init [
+BlocketRobot class >> initialize [
 	MonthMap := Dictionary new.
 	MonthMap at: 'jan' put: 1.
 	MonthMap at: 'feb' put: 2.
@@ -24,7 +24,7 @@ BlocketRobot class >> init [
 	MonthMap at: 'dec' put: 12
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 BlocketRobot >> checkIfItemExists: aBlocketItem [
 	| main |
 	[ self newGet: aBlocketItem url ]
@@ -42,13 +42,13 @@ BlocketRobot >> checkIfItemExists: aBlocketItem [
 	^ true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 BlocketRobot >> getItemFromUrl: url [
 	| main |
 	[ self newGet: url ]
 		on: Error
 		do: [ :e | ^ nil ].
-	self checkOk.	"Parse page"
+	self checkOk.	
 	self parseBody.
 	(dom innerContents includesSubstring: 'Hittade inte annonsen')
 		ifTrue: [ ^ #notFound ].
@@ -57,21 +57,17 @@ BlocketRobot >> getItemFromUrl: url [
 	^ self parseItem: main
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 BlocketRobot >> getList: aURL [
 	| rows |
 	self newGet: aURL.
 	self checkOk.
-	
-	"Parse page"
 	self parseBody.
-"self halt."
-	rows := self parseRows: (dom tagsWithClass: 'item_row') .
-	^rows
-
+	rows := self parseRows: (dom tagsWithClass: 'item_row').
+	^ rows
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testcode }
 BlocketRobot >> getTest [
 	| main rows sidorHtml |
 	self newGet: 'http://www.blocket.se/goteborg-angransande-lan'.
@@ -100,7 +96,7 @@ BlocketRobot >> getTest [
 "
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #parsing }
 BlocketRobot >> parseArea: html [
 	| pull area |
 	pull := html tagWithClass:'pull-left'.
@@ -109,7 +105,7 @@ BlocketRobot >> parseArea: html [
 	^ area
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #parsing }
 BlocketRobot >> parseDate: aString [
 	| d split m date |
 	aString = 'Igår' ifTrue: [ ^DateAndTime yesterday ].
@@ -124,23 +120,22 @@ BlocketRobot >> parseDate: aString [
 	^date
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #parsing }
 BlocketRobot >> parseDesc: html [
-		| txt |
-		txt:=''.
-		html children do: [:i|
-			(i tag = 'br') ifTrue:[ txt := txt, '
-'].
-			i isCDATA ifTrue: [txt := txt, i  innerContents trimmed].
-		].
-		"first innerContents withBlanksTrimmed."
-"		tag := html tagWithClass: 'list_price'.
+	| txt |
+	txt := ''.
+	html children
+		do: [ :i | 
+			i tag = 'br'
+				ifTrue: [ txt := txt , String cr ].
+			i isCDATA
+				ifTrue: [ txt := txt , i innerContents trimmed ] ].	"first innerContents withBlanksTrimmed."	"		tag := html tagWithClass: 'list_price'.
 		(tag = 'a')  ifTrue: [tag := tag children first].
 		^tag children first innerContents withBlanksTrimmed"
-		^txt
+	^ txt
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #parsing }
 BlocketRobot >> parseItem: html [
 	| flds t details mediaCont  images |
 	flds := Dictionary new.
@@ -168,20 +163,18 @@ t ifNotNil:[			flds at: #oldPrice put: t innerContents trimmed].
 	^ flds
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #parsing }
 BlocketRobot >> parseRows: listHtml [
-	| r rows title cat dt  mediaBody |
+	| r rows title cat dt mediaBody  |
 	rows := OrderedCollection new.
-	self halt.
 	listHtml
 		do: [ :html | 
-			r := BlocketItem new "html: html".
+			r := BlocketItem new.	"html: html"
 			r id: (html attributes at: 'id').
 			mediaBody := html children second.
 			dt := mediaBody children first children second attributes at: #datetime.
 			r dateTime: dt asDateAndTime.
-			"imgCont := html tagWithClass: 'image_container'.
-			r thumb: (imgCont tagWithClass: 'item_image')."
+			r thumb: (self parseThumb: html).
 			title := mediaBody tagWithClass: 'item_link'.
 			r title: title innerContents trimmed.
 			r url: title href.
@@ -192,6 +185,14 @@ BlocketRobot >> parseRows: listHtml [
 			cat := mediaBody children first children first children first.
 			r category: cat innerContents trimmed.
 			r area: (self parseArea: mediaBody).
-			rows add: r ].	
+			rows add: r ].
 	^ rows
+]
+
+{ #category : #parsing }
+BlocketRobot >> parseThumb: html [
+	| imgCont img |
+	imgCont := html tagWithClass: 'image_container'.
+	img := imgCont tagOfClass: HtmlIMGNode.
+	^ img attributes at: 'longdesc' ifAbsent: img src
 ]

@@ -7,30 +7,22 @@ Class {
 	#category : #'CAs-Blocket-Web'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 BlocketProjPage >> dontShow: anItem [
-	anItem
-		dontShow
+	anItem dontShow
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialize }
 BlocketProjPage >> initialize [
 	super initialize.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlocketProjPage >> project:aBlocketProject [
 	project:= aBlocketProject 
 ]
 
-{ #category : #'as yet unclassified' }
-BlocketProjPage >> refresh [
-	project
-		refresh;
-		save
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 BlocketProjPage >> renderContentOn: html [
 	| p |
 	html div
@@ -48,7 +40,7 @@ BlocketProjPage >> renderContentOn: html [
 				style: 'float:right';
 				with: [ 
 							html anchor
-								callback: [ self refresh ];
+								callback: [ self updateSearch ];
 								with: 'Uppdatera' ] ].
 	html div
 		class: #pageHeader;
@@ -56,10 +48,13 @@ BlocketProjPage >> renderContentOn: html [
 	p := project result reject: [ :i | i isDontShow ].
 	html unorderedList
 		class: #results;
-		with: [ p reverse do: [ :i | self renderItem: i on: html ] ]
+		with: [ p reverse do: [ :i | self renderItem: i on: html ] ].
+	html jQuery ajax
+		callback: [  ];
+		interval: 30000	"auto-refresh"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #rendering }
 BlocketProjPage >> renderItem: i on: html [
 	^ html listItem
 		class: 'item-box';
@@ -98,6 +93,9 @@ BlocketProjPage >> renderItem: i on: html [
 														with: i title ].
 									html div
 										class: #datum;
+										with: i area .
+									html div
+										class: #datum;
 										with: i dateTimeString.
 									html div
 										class: #pris;
@@ -117,12 +115,17 @@ BlocketProjPage >> renderItem: i on: html [
 						with: [ html span class: 'link-spanner' ] " ]
 ]
 
-{ #category : #'as yet unclassified' }
-BlocketProjPage >> showItem: aBlockItem [ 
-	self call:(BlocketItemPage new item:aBlockItem )
+{ #category : #actions }
+BlocketProjPage >> showItem: aBlockItem [
+	self call: (BlocketItemPage new item: aBlockItem)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 BlocketProjPage >> showSearch [
 	self call: (BlocketSearchPage new project: project)
+]
+
+{ #category : #actions }
+BlocketProjPage >> updateSearch [
+	project refresh
 ]

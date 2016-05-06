@@ -29,6 +29,11 @@ BlocketItemPage >> item: aBlocketItem [
 ]
 
 { #category : #'as yet unclassified' }
+BlocketItemPage >> openWeb [
+	self requestContext redirectTo: item url
+]
+
+{ #category : #'as yet unclassified' }
 BlocketItemPage >> refresh [
 	item
 		refresh;
@@ -39,27 +44,33 @@ BlocketItemPage >> refresh [
 BlocketItemPage >> renderContentOn: html [
 	html heading: item title.
 	html anchor
-		callback: [ self answer];
+		callback: [ self answer ];
 		with: 'Stäng'.
 	html text: '   --   '.
 	html anchor
-		callback: [ self dontShow];
+		callback: [ self dontShow ];
 		with: 'Visa inte igen'.
 	html text: '   --   '.
 	html anchor
-		callback: [ self starred];
+		callback: [ self starred ];
 		with: 'Stjärnmärkt'.
 	html text: '   --   '.
 	html anchor
-		callback: [ self refresh];
+		callback: [ self refresh ];
 		with: 'Uppdatera'.
+		html text: '   --   '.
+	html anchor
+		callback: [self openWeb ];
+		with: 'Öppna web'.
 	html break.
 	item thumb ifNotNil: [ html image url: item thumb ].
-	html div
-		with: item title.	html break.
-"		html div:(self renderDesc: item desc)."
-				html withLineBreaks: item desc.
-	html break
+	html div with: item title.
+	html break.	"		html div:(self renderDesc: item desc)."
+	html withLineBreaks: item desc.
+	html break.
+	html jQuery ajax
+		callback: [  ];
+		interval: 30000	"auto-refresh"
 ]
 
 { #category : #'as yet unclassified' }

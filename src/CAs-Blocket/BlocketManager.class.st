@@ -12,7 +12,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 BlocketManager class >> current [
-	Current ifNil: [ Current := self new].
+	Current ifNil: [ Current := self selectAll first].
 	^Current
 ]
 
@@ -21,6 +21,12 @@ BlocketManager class >> initDB [
 	| repository |
 	repository := VOMongoRepository database: 'blocket'.
 	repository enableSingleton
+]
+
+{ #category : #voyage }
+BlocketManager class >> initialize [
+	super initialize.
+	self initDB
 ]
 
 { #category : #voyage }

@@ -46,6 +46,11 @@ BlocketItem >> = aBlockItem [
 ]
 
 { #category : #accessing }
+BlocketItem >> area [
+	^self at: #area
+]
+
+{ #category : #accessing }
 BlocketItem >> area: aString [
 	self at: #area put: aString
 ]
@@ -67,13 +72,28 @@ BlocketItem >> at: key ifAbsent: aBlock [
 { #category : #'access primitives' }
 BlocketItem >> at: key put: anObject [
 	props at: key put: anObject.
-	self save.
 	^ anObject
+]
+
+{ #category : #accessing }
+BlocketItem >> category [
+	^self at: #category
 ]
 
 { #category : #accessing }
 BlocketItem >> category: aString [
 	self at: #category put: aString
+]
+
+{ #category : #printing }
+BlocketItem >> dateString [
+	| d |
+	d := self dateTime asDate.
+	d = Date today
+		ifTrue: [ ^ 'Idag' ].
+	d = Date yesterday
+		ifTrue: [ ^ 'Igår' ].
+	^ d yyyymmdd
 ]
 
 { #category : #accessing }
@@ -88,14 +108,11 @@ BlocketItem >> dateTime: aDateAndTime [
 	
 ]
 
-{ #category : #accessing }
+{ #category : #printing }
 BlocketItem >> dateTimeString [
-	| s  |
-	s := String new writeStream.
-	self dateTime printYMDOn: s.
-	s << ' '.
-	self dateTime printHMSOn: s.
-	^ s contents
+	| s |
+	s := self dateString , ' ' , self timeString.
+	^ s
 ]
 
 { #category : #accessing }
@@ -127,7 +144,9 @@ BlocketItem >> gone [
 
 { #category : #testing }
 BlocketItem >> goneMark [
-	(self at: #gone) isNil ifTrue:[^''] ifFalse:[ ^'Borta' ]
+	(self at: #gone) isNil
+		ifTrue: [ ^ '' ]
+		ifFalse: [ ^ 'Borta' ]
 ]
 
 { #category : #accessing }
@@ -148,8 +167,7 @@ BlocketItem >> id [
 { #category : #accessing }
 BlocketItem >> id: aString [
 	id := aString asSymbol.
-	self halt.
-	self save
+
 ]
 
 { #category : #accessing }
@@ -166,7 +184,7 @@ BlocketItem >> initialize [
 
 { #category : #testing }
 BlocketItem >> isDontShow [
-	^(self at: #dontshow ifAbsent: [ ^false] ) 
+	^ self at: #dontshow ifAbsent: [ ^ false ]
 ]
 
 { #category : #testing }
@@ -191,7 +209,9 @@ BlocketItem >> listColumns [
 
 { #category : #testing }
 BlocketItem >> newMark [
-	(self at: #viewed) isNil ifTrue:[^'Ny'] ifFalse:[ ^'' ]
+	(self at: #viewed) isNil
+		ifTrue: [ ^ 'Ny' ]
+		ifFalse: [ ^ '' ]
 ]
 
 { #category : #accessing }
@@ -271,7 +291,7 @@ BlocketItem >> starred: aBoolean [
 { #category : #accessing }
 BlocketItem >> thumb [
 	thumb isNil ifTrue: [^nil].
-	^thumb attributes at: #src
+	^thumb 
 	
 ]
 
@@ -280,6 +300,14 @@ BlocketItem >> thumb: anIMG [
 	thumb := anIMG
 	
 "self attributes at: 'src' "
+]
+
+{ #category : #printing }
+BlocketItem >> timeString [
+	| s  |
+	s := String new writeStream.
+	self dateTime asTime print24: true showSeconds: false on: s.
+	^ s contents
 ]
 
 { #category : #accessing }
