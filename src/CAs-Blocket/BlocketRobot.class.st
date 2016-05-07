@@ -137,17 +137,18 @@ BlocketRobot >> parseDesc: html [
 
 { #category : #parsing }
 BlocketRobot >> parseItem: html [
-	| flds t details carousel images imgs |
+	| flds t carousel images imgs |
 	flds := Dictionary new.
 	t := (html tagOfClass: HtmlH1Node) innerContents trimmed.
 	flds at: #title put: t.
 	t := self parseDesc: (html tagWithClass: 'body').
 	flds at: #desc put: t.
-	details := html tagWithId: 'price_container'.
-	t := (details tagWithId: 'vi_price') innerContents trimmed.
-	flds at: #price put: t.
-	t := details tagWithClass: 'text_secondary'.
-	t ifNotNil: [ flds at: #oldPrice put: t innerContents trimmed ].
+	(html tagWithId: 'price_container')
+		ifNotNil: [ :details | 
+			t := (details tagWithId: 'vi_price') innerContents trimmed.
+			flds at: #price put: t.
+			t := details tagWithClass: 'text_secondary'.
+			t ifNotNil: [ flds at: #oldPrice put: t innerContents trimmed ] ].
 	images := OrderedCollection new.
 	carousel := html tagWithClass: 'carousel-inner'.
 	imgs := carousel tagsOfClass: HtmlIMGNode.
