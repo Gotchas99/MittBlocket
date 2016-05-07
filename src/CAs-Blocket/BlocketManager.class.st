@@ -34,6 +34,18 @@ BlocketManager class >> isVoyageRoot [
     ^ true
 ]
 
+{ #category : #voyage }
+BlocketManager class >> mongoProjects [
+	<mongoDescription>
+	self halt.
+	^ VOMongoToManyDescription new
+		attributeName: 'projects';
+		kindCollection: SortedCollection;
+		convertNullToEmpty;
+		beLazy;
+		yourself
+]
+
 { #category : #'as yet unclassified' }
 BlocketManager class >> reset [
 	Current := nil
@@ -78,7 +90,7 @@ BlocketManager >> projects [
 
 { #category : #'as yet unclassified' }
 BlocketManager >> refresh [
-	projects := BlocketProject selectAll asSortedCollection
+	projects := BlocketProject selectAll 
 ]
 
 { #category : #'as yet unclassified' }

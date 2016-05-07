@@ -18,7 +18,6 @@ BlocketProject class >> isVoyageRoot [
 { #category : #mongo }
 BlocketProject class >> mongoResult [
 	<mongoDescription>
-	self halt.
 	^ VOMongoToManyDescription new
 		attributeName: 'result';
 		kindCollection: SortedCollection;
