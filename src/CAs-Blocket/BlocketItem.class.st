@@ -266,7 +266,9 @@ BlocketItem >> refresh [
 	newProps isNil
 		ifTrue: [ ^ nil ].
 	newProps = #notFound
-		ifTrue: [ ^ nil ].
+		ifTrue: [ 
+			self gone.
+			^ nil ].
 	newProps keysAndValuesDo: [ :key :val | self at: key put: val ].
 	images := props at: #images.
 	images isEmpty

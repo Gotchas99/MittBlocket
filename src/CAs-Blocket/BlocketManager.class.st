@@ -66,6 +66,11 @@ BlocketManager >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
+BlocketManager >> isServiceAvailable [
+	^ Mongo default isAvailable
+]
+
+{ #category : #'as yet unclassified' }
 BlocketManager >> projects [
 	projects ifNil: [projects := SortedCollection new].
 	^projects

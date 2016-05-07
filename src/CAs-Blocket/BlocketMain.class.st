@@ -22,7 +22,13 @@ BlocketMain class >> initFileLibrary [
 
 { #category : #'as yet unclassified' }
 BlocketMain class >> initialize [
-	WAAdmin register: self asApplicationAt: self handlerName
+	| app |
+	app := WAAdmin register: self asApplicationAt: self handlerName.
+	app
+		addLibrary: BlocketFileLibrary;
+		addLibrary: JQDeploymentLibrary;
+		addLibrary: TBSDeploymentLibrary.
+	^ app
 ]
 
 { #category : #'as yet unclassified' }
@@ -53,7 +59,9 @@ BlocketMain >> removeProject: aProject [
 
 { #category : #'as yet unclassified' }
 BlocketMain >> renderContentOn: html [
-	BlocketManager current refresh.
+	BlocketManager current isServiceAvailable
+		ifTrue: [ BlocketManager current refresh ]
+		ifFalse: [ html heading: 'Database is offline. Please fix <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<' ].
 	html heading: 'Blocket projekt'.
 	html anchor
 		callback: [ self addProject ];

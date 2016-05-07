@@ -137,29 +137,22 @@ BlocketRobot >> parseDesc: html [
 
 { #category : #parsing }
 BlocketRobot >> parseItem: html [
-	| flds t details mediaCont  images |
+	| flds t details carousel images imgs |
 	flds := Dictionary new.
 	t := (html tagOfClass: HtmlH1Node) innerContents trimmed.
 	flds at: #title put: t.
 	t := self parseDesc: (html tagWithClass: 'body').
 	flds at: #desc put: t.
 	details := html tagWithId: 'price_container'.
-			t := (details tagWithId: 'vi_price') innerContents trimmed.
-			flds at: #price put: t.
-			t := (details tagWithClass: 'text_secondary') .
-t ifNotNil:[			flds at: #oldPrice put: t innerContents trimmed].
+	t := (details tagWithId: 'vi_price') innerContents trimmed.
+	flds at: #price put: t.
+	t := details tagWithClass: 'text_secondary'.
+	t ifNotNil: [ flds at: #oldPrice put: t innerContents trimmed ].
 	images := OrderedCollection new.
-	mediaCont := html tagWithClass: 'carousel-inner'.
-"	thumbs := mediaCont tagWithId: 'thumbs'."
-	mediaCont children do: [ :li | images add: (li children first  attributes at: 'data-src') ].
-	flds at: #images put: images.	"	
-		dt := html tagWithClass: 'date_image'.
-		r date: ( (dt children at: 1) innerContents trimmed).
-		r time: ( (dt children at: 2) innerContents trimmed).
-		
-		cat := title tagWithClass: 'cat_geo'.
-		r category: ( ((cat tagsOfClass: HtmlANode) first) innerContents trimmed).
-		r area: (self parseArea: cat)."	"		r inspect."	"self halt."
+	carousel := html tagWithClass: 'carousel-inner'.
+	imgs := carousel tagsOfClass: HtmlIMGNode.
+	images := imgs collect: [ :img | img attributes at: 'data-src' ].
+	flds at: #images put: images.
 	^ flds
 ]
 

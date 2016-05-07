@@ -35,9 +35,7 @@ BlocketItemPage >> openWeb [
 
 { #category : #'as yet unclassified' }
 BlocketItemPage >> refresh [
-	item
-		refresh;
-		save	"	self updateFields"
+	item refresh
 ]
 
 { #category : #'as yet unclassified' }
@@ -58,14 +56,15 @@ BlocketItemPage >> renderContentOn: html [
 	html anchor
 		callback: [ self refresh ];
 		with: 'Uppdatera'.
-		html text: '   --   '.
+	html text: '   --   '.
 	html anchor
-		callback: [self openWeb ];
+		callback: [ self openWeb ];
 		with: 'Öppna web'.
 	html break.
-	item thumb ifNotNil: [ html image url: item thumb ].
-	html div with: item title.
-	html break.	"		html div:(self renderDesc: item desc)."
+	item images
+		ifNil: [ item thumb ifNotNil: [ html image url: item thumb ] ]
+		ifNotNil: [ html image url: item images first ].
+	html break.	
 	html withLineBreaks: item desc.
 	html break.
 	html jQuery ajax
