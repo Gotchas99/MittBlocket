@@ -10,12 +10,24 @@ Class {
 	#category : #'CAs-Blocket'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #mongo }
 BlocketProject class >> isVoyageRoot [
     ^ true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #mongo }
+BlocketProject class >> mongoResult [
+	<mongoDescription>
+	self halt.
+	^ VOMongoToManyDescription new
+		attributeName: 'result';
+		kindCollection: SortedCollection;
+		convertNullToEmpty;
+		beLazy;
+		yourself
+]
+
+{ #category : #samples }
 BlocketProject class >> newBlandare [
 	| p |
 	p := self new.
@@ -28,14 +40,14 @@ BlocketProject class >> newBlandare [
 	^p
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #mongo }
 BlocketProject class >> voyageCollectionName [
  ^ 'Projects'
 ]
 
 { #category : #'as yet unclassified' }
 BlocketProject >> <= aProject [
-	^self name <= aProject name
+	^self name caseInsensitiveLessOrEqual: aProject name
 ]
 
 { #category : #action }
