@@ -73,7 +73,8 @@ BlocketManager class >> voyageCollectionName [
 
 { #category : #'as yet unclassified' }
 BlocketManager >> addProject: aProject [
-	^self projects add: aProject.
+	self projects add: aProject.
+	self save
 
 ]
 
@@ -100,8 +101,8 @@ BlocketManager >> refresh [
 
 { #category : #'as yet unclassified' }
 BlocketManager >> removeProject: aProject [
-	^self projects remove: aProject.
-
+	self projects remove: aProject.
+	self save
 ]
 
 { #category : #'as yet unclassified' }

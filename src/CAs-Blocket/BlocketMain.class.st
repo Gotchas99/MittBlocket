@@ -69,7 +69,7 @@ BlocketMain >> renderContentOn: html [
 	html
 		break;
 		break;
-		text: 'Projektlista';
+		heading: 'Projektlista';
 		break.
 	BlocketManager current projects
 		do: [ :p | 
