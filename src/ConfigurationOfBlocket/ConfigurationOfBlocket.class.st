@@ -135,7 +135,12 @@ ConfigurationOfBlocket >> baseline01: spec [
 				spec
 					className: #ConfigurationOfWebRobot;
 					versionString: #'bleedingEdge';
-					repository: 'http://smalltalkhub.com/mc/Gotchas/TvProgram/main/' ].
+					repository: 'http://smalltalkhub.com/mc/Gotchas/TvProgram/main/' ];
+			project: 'Bootstrap' with: [
+				spec
+					className: #ConfigurationOfBootstrap;
+					versionString: #'stable';
+					repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo40/main/' ].
 		spec package: 'CAs-Blocket' with: [
 				spec requires: #('WebRobot' 'Seaside3' 'VoyageMongo' ). ].
 		spec 
