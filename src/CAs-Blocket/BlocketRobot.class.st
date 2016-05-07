@@ -187,5 +187,6 @@ BlocketRobot >> parseThumb: html [
 	| imgCont img |
 	imgCont := html tagWithClass: 'image_container'.
 	img := imgCont tagOfClass: HtmlIMGNode.
+	img ifNil: [ ^ nil ].
 	^ img attributes at: 'longdesc' ifAbsent: img src
 ]
