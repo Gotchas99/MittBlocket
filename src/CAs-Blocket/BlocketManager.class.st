@@ -37,7 +37,6 @@ BlocketManager class >> isVoyageRoot [
 { #category : #voyage }
 BlocketManager class >> mongoProjects [
 	<mongoDescription>
-	self halt.
 	^ VOMongoToManyDescription new
 		attributeName: 'projects';
 		kindCollection: SortedCollection;
@@ -48,7 +47,13 @@ BlocketManager class >> mongoProjects [
 
 { #category : #'as yet unclassified' }
 BlocketManager class >> reset [
+	self resetVoDescriptors.
 	Current := nil
+]
+
+{ #category : #voyage }
+BlocketManager class >> resetVoDescriptors [
+	VOMongoRepository current flush
 ]
 
 { #category : #'as yet unclassified' }
