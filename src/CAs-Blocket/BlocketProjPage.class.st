@@ -25,10 +25,15 @@ BlocketProjPage >> project:aBlocketProject [
 { #category : #rendering }
 BlocketProjPage >> renderContentOn: html [
 	| p |
-	html div
-		class: #pageHeader;
-		with: project printString.
 	html
+		tbsContainer: [ 
+			html heading: project printString.
+			"html div
+				class: #pageHeader;
+				with: project printString."
+			html
+				tbsForm: [ 
+					"html
 		paragraph: [ 
 			html anchor
 				callback: [ self back ];
@@ -41,14 +46,16 @@ BlocketProjPage >> renderContentOn: html [
 				with: [ 
 							html anchor
 								callback: [ self updateSearch ];
-								with: 'Uppdatera' ] ].
-	html div
-		class: #pageHeader;
-		with: 'Resultat'.
-	p := project result reject: [ :i | i isDontShow ].
-	html unorderedList
-		class: #results;
-		with: [ p reverse do: [ :i | self renderItem: i on: html ] ].
+								with: 'Uppdatera' ] ]."
+					self renderNavOn: html.
+					html break;break.
+					"html div
+						class: #pageHeader;
+						with: 'Resultat'."
+					p := project result reject: [ :i | i isDontShow ].
+					html unorderedList
+						class: #results;
+						with: [ p reverse do: [ :i | self renderItem: i on: html ] ] ] ].
 	html jQuery ajax
 		callback: [  ];
 		interval: 30000	"auto-refresh"
@@ -113,6 +120,25 @@ BlocketProjPage >> renderItem: i on: html [
 					html break	"html anchor
 						callback: [ self showItem: i ];
 						with: [ html span class: 'link-spanner' ] " ]
+]
+
+{ #category : #actions }
+BlocketProjPage >> renderNavOn: html [
+	html tbsButton
+		beDefault;
+		callback: [ self answer ];
+		with: 'Stäng'.
+	html space.
+	html tbsButton
+		beDefault;
+		callback: [ self showSearch ];
+		with: 'Visa sökningar'.
+	html space.
+	html tbsButton
+		beSuccess;
+		callback: [ self updateSearch ];
+		with: 'Uppdatera'.
+	html space
 ]
 
 { #category : #actions }

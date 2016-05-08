@@ -96,7 +96,7 @@ BlocketManager >> projects [
 
 { #category : #'as yet unclassified' }
 BlocketManager >> refresh [
-	projects := BlocketProject selectAll 
+	projects := BlocketProject selectAll asSortedCollection
 ]
 
 { #category : #'as yet unclassified' }

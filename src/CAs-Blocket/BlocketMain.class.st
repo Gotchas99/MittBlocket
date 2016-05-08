@@ -59,29 +59,53 @@ BlocketMain >> removeProject: aProject [
 
 { #category : #'as yet unclassified' }
 BlocketMain >> renderContentOn: html [
-	BlocketManager current isServiceAvailable
-		ifTrue: [ BlocketManager current refresh ]
-		ifFalse: [ html heading: 'Database is offline. Please fix <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<' ].
-	html heading: 'Blocket projekt'.
-	html anchor
+	html
+		tbsContainer: [ 
+			BlocketManager current isServiceAvailable
+				ifTrue: [ BlocketManager current refresh ]
+				ifFalse: [ self renderOfflineMsgOn: html ].
+			html heading: 'Blocket projekt'.
+			html
+				tbsForm: [ 
+					self renderNavOn: html.	"	html anchor
 		callback: [ self addProject ];
 		with: 'Nytt projekt'.
+"
+					html
+						break;
+						break.
+					html heading
+						level2;
+						with: 'Projektlista'.
+					html break.
+					BlocketManager current projects
+						do: [ :p | 
+							html anchor
+								callback: [ self showProject: p ];
+								with: p printString.
+							html text: '   -   '.
+							html anchor
+								callback: [ self removeProject: p ];
+								with: 'Ta bort'.
+							html break ].
+					html break ] ]
+]
+
+{ #category : #'as yet unclassified' }
+BlocketMain >> renderNavOn: html [
+	html tbsButton
+		beDefault;
+		callback: [ self addProject ];
+		with: 'Nytt projekt'.
+	
+]
+
+{ #category : #'as yet unclassified' }
+BlocketMain >> renderOfflineMsgOn: html [
 	html
-		break;
-		break;
-		heading: 'Projektlista';
-		break.
-	BlocketManager current projects
-		do: [ :p | 
-			html anchor
-				callback: [ self showProject: p ];
-				with: p printString.
-			html text: '   -   '.
-			html anchor
-				callback: [ self removeProject: p ];
-				with: 'Ta bort'.
-			html break ].
-	html break
+		tbsJumbotron: [ 
+			html heading: 'Database is offline.'.
+			html paragraph: 'Please fix <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<' ]
 ]
 
 { #category : #'as yet unclassified' }
