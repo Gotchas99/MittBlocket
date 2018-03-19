@@ -120,25 +120,21 @@ ConfigurationOfBlocket >> baseline01: spec [
 				spec
 					className: #ConfigurationOfBootstrap;
 					versionString: #'stable';
-					repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo40/main/';
 					repository: 'http://smalltalkhub.com/mc/TorstenBergmann/Bootstrap/main/' ];
 			project: 'MongoTalk' with: [
 				spec
 					className: #ConfigurationOfMongoTalk;
 					versionString: #'stable';
-					repository: 'http://smalltalkhub.com/mc/MongoTalkTeam/mongotalk/main/';
-					repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo40/main/' ];
+					repository: 'http://smalltalkhub.com/mc/MongoTalkTeam/mongotalk/main/'];
 			project: 'Seaside3' with: [
 				spec
 					className: #ConfigurationOfSeaside3;
 					versionString: #'stable';
-					repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo40/main/';
 					repository: 'http://smalltalkhub.com/mc/Seaside/MetacelloConfigurations/main/' ];
 			project: 'VoyageMongo' with: [
 				spec
 					className: #ConfigurationOfVoyageMongo;
 					versionString: #'stable';
-					repository: 'http://smalltalkhub.com/mc/Pharo/MetaRepoForPharo40/main/';
 					repository: 'http://smalltalkhub.com/mc/estebanlm/Voyage/main/' ];
 			project: 'WebRobot' with: [
 				spec
@@ -146,7 +142,7 @@ ConfigurationOfBlocket >> baseline01: spec [
 					versionString: #'bleedingEdge';
 					repository: 'http://smalltalkhub.com/mc/Gotchas/TvProgram/main/' ].
 		spec package: 'CAs-Blocket' with: [
-				spec requires: #('WebRobot' 'Seaside3' 'VoyageMongo' ). ].
+				spec requires: #('WebRobot' 'Seaside3' 'Bootstrap' 'VoyageMongo' ). ].
 		spec 
 			group: 'core' with: #('CAs-Blocket' );
 			group: 'default' with: #('core' 'tests' );
